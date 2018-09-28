@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Crear Carrusel de Imágenes</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="Agrega_Imagen.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="Agrega_Imagen.js"></script>
+</head>
+<body>
+	<div id="main">
+		<div class="contenedor">
+			<div id="bloque0" value="0"><hr hidden>
+				<label for="imagen0">Imagen:</label>
+				<input type="text" id="imagen0">
+				<p>
+					<label for="texto0">Texto:</label>
+					<input type="text" id="texto0">
+				</p>
+				<p>
+					<label for="url0">URL:</label>
+					<input type="text" id="url0">
+				</p>
+			</div>
+		</div>
+		<p>
+			<button id="añadir" onclick="addImage()">+</button>
+		</p>
+		<div>
+			<button id='update' onclick="addCode()">Actualizar</button>
+			<p><textarea id="html" onclick="this.focus();this.select();document.execCommand('copy');"></textarea></p>
+		</div>
+	</div>
+</body>
+</html>

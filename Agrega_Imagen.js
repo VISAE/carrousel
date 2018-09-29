@@ -1,25 +1,59 @@
 var idCarousel = Math.floor(Math.random()*10000+1);
+var counter = 0;
+
+$(document).ready(function() {
+
+	$('#add').click(function() {
+		addImage();		
+	});
+
+	$('#update').click(function() {	
+		if($("#accordion .panel-collapse").length > 0) {	
+			$("#ex1").empty().append("<p>De click en el código para seleccionar y copiar automáticamente</p>"+
+							 		 "<p><textarea id='html' onclick='selectText()'></textarea></p>").modal({
+	  			fadeDuration: 100
+			});
+			$('#html').val(addCode());
+		} else {
+			$("#ex1").empty().append("<h2 style='color:red;'>¡No se han agregado imágenes!</h2>").modal({
+	  			fadeDuration: 100
+			});
+		}
+	});
+});
 
 function addImage() {
-	var contenedor = document.getElementsByClassName("contenedor")[0];
-	var bloque = document.getElementById("bloque0");
-	var value = parseInt(bloque.getAttribute('value')) + 1;
-	bloque.setAttribute('value', value);
-	contenedor.insertAdjacentHTML('beforeend','<div id="bloque'+ value +'"><hr>\
-							<label for="imagen'+ value +'">Imagen:</label>\
-							<input type="text" id="imagen'+value+'">\
-							<p>\
-							<label for="texto'+value+'">Texto:</label>\
-							<input type="text" id="texto'+value+'">\
-							</p>\
-							<p>\
-							<label for="url'+value+'">URL:</label>\
-							<input type="text" id="url'+value+'">\
-							</p>\
-							<p>\
-							<button id="quitar" onclick="removeImage(this.getAttribute(\'value\'))" value="'+value+'">-</button>\
-							</p>\
-							</div>');
+	counter++;	
+	$('#accordion').append(		
+	"<div id='panel"+counter+"' class='panel panel-default'>"+
+      "<div class='panel-heading'>"+
+        "<h4 class='panel-title'>"+	
+          "<a data-toggle='collapse' data-parent='#accordion' href='#collapse"+counter+"'>Imagen #"+($("#accordion").children().length+1)+"</a>"+
+          "<span class='deleteAccordion' onclick='deleteAccordion("+counter+")'>X</span>"+
+        "</h4>"+
+      "</div>"+
+      "<div id='collapse"+counter+"' class='panel-collapse collapse'>"+
+        "<div class='panel-body'>"+
+        	"<div class='contenedor'>"+
+				"<div class='bloque' id='bloque"+counter+"' value='"+counter+"'>"+
+					"<div>"+
+						"<label for='imagen"+counter+"'>Imagen:</label>"+
+						"<input type='text' id='imagen"+counter+"' name='imagen"+counter+"'>"+
+					"</div>"+
+					"<div>"+
+						"<label for='texto"+counter+"'>Texto:</label>"+
+						"<input type='text' id='texto"+counter+"' name='texto"+counter+"'>"+
+					"</div>"+
+					"<div>"+
+						"<label for='url"+counter+"'>URL:</label>"+
+						"<input type='text' id='url"+counter+"' name='url"+counter+"'>"+
+					"</div>"+
+				"</div>"+
+			"</div>"+
+        "</div>"+
+      "</div>"+
+    "</div>"
+    );
 }
 
 function addCode() {
@@ -37,28 +71,44 @@ function addCode() {
 		<span class="sr-only">Next</span>\
 		</a>\
 		</div>';
-	var html = document.getElementById("html");
-	var contenedor = document.getElementsByClassName("contenedor")[0];
 	var sequence = '';
 	var images = '';
 	var active = ' active';
-	var i = 0;
+	var i = 0, inc = 0;	
+	var inputs = $("#accordion .panel-collapse .panel-body .contenedor .bloque div input");
 	do {
-		var image = contenedor.children[i].children[2].value;
-		var text = contenedor.children[i].children[3].children[1].value;
-		var url = contenedor.children[i].children[4].children[1].value;
-		console.log(text);
-		sequence += '<li data-target="#Carrusel'+idCarousel+'" data-slide-to='+i+' class='+active+'></li>';
+		var image = inputs[i++].value;
+		var text = inputs[i++].value;
+		var url = inputs[i++].value;
+		sequence += '<li data-target="#Carrusel'+idCarousel+'" data-slide-to='+(inc++)+' class='+active+'></li>';
 		images += '<div class="item'+active+'"> <!-- Inicio Imagen -->\
 			<a href=\"'+(url!==''?url:'#')+'\"><img src=\"'+image+'\" alt=\"'+(text!=''?text:'#')+'\" style="width: 100%;" /></a>\
 			<div style="color:white; text-shadow: 2px 2px #000000; font-weight: bold; position: absolute; bottom: 8px; left: 16px;">'+text+'</div>\
 			</div> <!-- Fin imagen -->';
 		active = '';
-		i++;
-	} while(i < contenedor.childElementCount);
-	html.innerHTML = header + sequence + middle + images + footer;
+	} while(i < inputs.length);
+	return header + sequence + middle + images + footer;
 }
 
-function removeImage(value) {
-	var image = document.getElementById("bloque"+value).remove();
+function deleteAccordion(id) {
+	$('#panel'+id).remove();	
+	for (var i = 0; i < $("#accordion").children().length; i++)
+		$("#accordion .panel .panel-heading .panel-title a")[i].text = 'Imagen #'+(i+1);
+}
+
+
+function selectText() {
+	$('#html').focus().select();
+	document.execCommand('copy');
+}
+
+function save() {		
+	$.ajax({
+		type: 'POST',
+		data: $('#imageData').serialize(),
+		url: 'savedata.php',
+		success: function(data) {
+			console.log(data);
+		}
+	});
 }

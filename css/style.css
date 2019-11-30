@@ -7,8 +7,8 @@ body {
 	position: absolute;
 	left: 50%;
 	top: 50%;
-	width: 300px;	
-	transform: translate(-150px, -50%);
+	width: 350px;	
+	transform: translate(-175px, -50%);
 }
 
 .contenedor {
@@ -69,4 +69,17 @@ textarea {
   -moz-box-shadow:    1px 1px 5px rgba(0,0,0,0.5);
   -webkit-box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
   box-shadow:         1px 1px 5px rgba(0,0,0,0.5);
+}
+
+.boxshadow {
+  position: relative;
+  -moz-box-shadow: 1px 2px 4px rgba(0, 0, 0,0.5);
+  -webkit-box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
+  padding: 10px;
+  background: white;
+}
+
+.lista {
+    width: 100%;
 }

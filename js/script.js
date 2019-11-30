@@ -105,11 +105,13 @@ function selectText(element) {
 	document.execCommand('copy');
 }
 
-function saveData() {
+function saveData(code=null, name=null) {
 	var totalImages = $('#accordion .panel-collapse').length;
 	if(totalImages > 0) {
+            if(name && name != $('#name').val())
+                $('#name').val(name);
 		var strData = $('#imageData').serialize();
-		strData += '&total='+totalImages;
+		strData += '&total='+totalImages+'&confirm='+(code?1:0);
 		$.ajax({
 			type: 'POST',
 			data: strData,
@@ -128,26 +130,31 @@ function saveData() {
 }
 
 function loadData(code) {
+    $('#accordion').empty();
+    if(code !== 'undefined') {
+        $('#code').val(code);
 	$.ajax({
 		type: 'POST',
 		data: {code:code},
 		url: 'pages/loaddata.php',
 		success: function(data) {
-			data = JSON.parse(data);
+			data = JSON.parse(data);                        
 			if(!data.hasOwnProperty('text')) {
 				data.forEach(row => {
-					addImage();
+					addImage();                                        
 					let fields = row.carr_img_data.split(",");
 					$('#imagen'+counter).val(fields[0]);
 					$('#texto'+counter).val(fields[1]);
 					$('#url'+counter).val(fields[2]);
+                                        $('#name').val(row.name);
 				});
 			} else {
 				$("#ex1").empty().append(data.text).modal(data);
 			}
 		}
 	});
-	return false;
+    }
+    return false;
 }
 
 function showToolTips() {
@@ -174,4 +181,19 @@ function googleLinks(link) {
 					});	
 	}
 	return str;
+}
+
+function openData() {
+    $.ajax({
+        type: 'POST',
+	url: 'pages/opendata.php',
+	success: function(data) {
+            data = JSON.parse(data);            
+            if(!data.hasOwnProperty('text')) {
+                $("#ex1").empty().append(data.html).modal(data);
+            } else {
+		$("#ex1").empty().append(data.text).modal(data);
+            }
+	}
+    });
 }

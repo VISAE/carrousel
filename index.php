@@ -22,9 +22,12 @@ session_start();
 		<div class="btn-group" role="group">
 			<a id="add" href="#" class="btn btn-primary" role="button" aria-pressed="true">Agregar Imagen</a>
 			<a id="update" class="btn btn-primary" role="button" aria-pressed="true">Generar código</a>
-			<a id="save" href="#" class="btn btn-primary" role="button" aria-pressed="true" onclick="saveData()"><i class="fa fa-floppy-o" style="font-size:19px"></i></a>
+                        <a id="save" href="#" class="btn btn-primary" role="button" aria-pressed="true" onclick="saveData()"><i class="fa fa-floppy-o" style="font-size:19px"></i></a>
+			<a id="open" href="#" class="btn btn-primary" role="button" aria-pressed="true" onclick="openData()"><i class="fa fa-folder-open-o" style="font-size:19px"></i></a>
 		</div>
 		<form id="imageData" name='imageData'>
+                    <input id="code" name="code" type="hidden">
+                    <input id="name" name="name" type="hidden">
 			<div class="panel-group" id="accordion">
 	  		</div>
   		</form> 

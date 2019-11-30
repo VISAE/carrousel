@@ -9,9 +9,10 @@ $utils = new Utils();
 if (isset($_POST['code'])) {	
 	$code = $_POST['code'];
 
-	$getRow = $db->getRow("SELECT `carr_code` FROM `carrousel` WHERE `carr_code` = ?", [$code]);
+	$getRow = $db->getRow("SELECT `carr_code`, carr_saved_name FROM `carrousel` WHERE `carr_code` = ?", [$code]);
 	if ($getRow) {
-		$getRows = $db->getRows("SELECT `carr_img_carr_code`, `carr_img_data` FROM `carrousel_images` WHERE `carr_img_carr_code` = ?", [$code]);
+            $name = $getRow['carr_saved_name'];
+		$getRows = $db->getRows("SELECT `carr_img_carr_code`, `carr_img_data`, '".$name."' AS name FROM `carrousel_images` WHERE `carr_img_carr_code` = ?", [$code]);
 		if($getRows) {
 			$data = array();
 			foreach ($getRows as $row) 
